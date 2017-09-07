@@ -17,8 +17,9 @@ int main(void) {
    if (ftell(fp) == 0) 
       createFile(fp);
    else {
-      rewind(fp);
-      printf("File loc after rewind: %ld\n", ftell(fp));
+      //rewind(fp);
+      fp = fopen(SFILE_NAME, "r");
+      printf("File loc after reopen: %ld\n", ftell(fp));
       readFile(fp);
    }
 
@@ -36,17 +37,20 @@ void createFile(FILE * fp) {
    speed = getInput("Enter your speed: ");
    agil = getInput("Enter your agility: ");
 
-   fprintf(fp, "Format %d\n", SFILE_FORMAT);
+   fprintf(fp, "Format X%d\n", SFILE_FORMAT);
    fprintf(fp, "%d-%d-%d-%d\n", str, endur, speed, agil);
 }
 
 void readFile(FILE * fp) {
    puts("Read file");
    int c;
+   int format = -1;
    while (c != EOF) {
       c = fgetc(fp);
-      printf("Read %d", c);
+      if ((char)c == 'X')
+         format = fgetc(fp);
    }
+   printf("Format read %c", format);
    return;
 }
 
